@@ -1,38 +1,65 @@
 CREATE TABLE genero (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	nome 	VARCHAR(40) NOT NULL,
-	
+	nome 	VARCHAR(40) NOT NULL
 );
 
 CREATE TABLE autor (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	nome 	VARCHAR(40) NOT NULL,
+	nome 	VARCHAR(40) NOT NULL
 	
 );
 
 CREATE TABLE origem (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	nome 	VARCHAR(40) NOT NULL,
+	nome 	VARCHAR(40) NOT NULL
 	
 );
 
+CREATE TABLE status (
+	id 	INT AUTO_INCREMENT PRIMARY KEY,
+	nome 	VARCHAR(40) NOT NULL
+	
+);
+
+CREATE TABLE nome_anime(
+	id 	INT AUTO_INCREMENT PRIMARY KEY,
+	nome 	VARCHAR(40) NOT NULL
+	
+);
+
+
+
 CREATE TABLE avaliacao (
-  id		INT AUTO_INCREMENT,
-  nome          varchar(20)  NOT NULL PRIMARY KEY,
-  autor_id	INT NOT NULL,
-  episodios 	varchar(500) NOT NULL,
-  origem_id	INT NOT NULL,
-  status_id	INT NOT NULL,
-  lancamento	varchar(20) NOT NULL,
-  volumes	INT NOT NULL,
-  sinopse	varchar(100),
-  resumo	varchar(100) NOT NULL,
-  enredo	INT NOT NULL,
-  enrolacao	INT NOT NULL,
-  animacao	INT NOT NULL,
-  desenvolvimento	INT NOT NULL,
-  critica	varchar(500)   NOT NULL,
-  nota_final 	decimal(2, 2)  NOT NULL,
-	FOREIGN KEY (origem_id) REFERENCES origem(id) ON DELETE RESTRICT,
+  	id		INT AUTO_INCREMENT,
+  	nome_anime_id   varchar(40) NOT NULL,
+  	autor_id     	INT NOT NULL,
+	genero_id 	INT NOT NULL,
+	temporada_aval	INT NOT NULL,
+ 	episodios 	INT NOT NULL,
+	temporadas	INT NOT NULL,
+	lancamento_anime DATE NOT NULL,
+	status_anime_id	INT NOT NULL,	
+  	origem_id	INT NOT NULL,
+	volumes		INT NOT NULL,
+  	lancamento_origem YEAR NOT NULL,
+  	status_origem_id INT NOT NULL,
+	ovas		INT,
+	filmes		INT,
+  	sinopse		varchar(100),
+  	resumo		varchar(500) NOT NULL,
+  	enredo		INT NOT NULL,
+  	enrolacao	INT NOT NULL,
+  	animacao	INT NOT NULL,
+  	desenvolvimento	INT NOT NULL,
+  	critica		varchar(500)   NOT NULL,
+	dropado		INT NOT NULL,
+  	nota_final 	decimal(2, 2)  NOT NULL,
+	data_criacao	DATA NOT NULL,
+	data_mod	DATA NOT NULL,
+		FOREIGN KEY (autor_id) REFERENCES autor(id) ON DELETE RESTRICT,
+		FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE RESTRICT,
+		FOREIGN KEY (origem_id) REFERENCES origem(id) ON DELETE RESTRICT,
+		FOREIGN KEY (status_anime_id) REFERENCES status(id) ON DELETE RESTRICT,
+		FOREIGN KEY (status_origem_id) REFERENCES status(id) ON DELETE RESTRICT
   
 );

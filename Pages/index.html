@@ -21,9 +21,12 @@
         <div>
           <p><a onclick="abreFechaCadastrosAuxiliares()">Cadastros Auxiliares</a></p>
           <div style="margin-left: 10px; display: none;" id="divCadastrosAuxiliares">
-            <p><a onclick="carregaGenero()">Gênero</a></p>
-            <p><a onclick="carregaAutor()">Autor</a></p>
-            <p><a onclick="carregaOrigem()">Origem</a></p>
+            <p><a onclick="carregaCadastrosAuxiliares(this.name)" name="animes_genero">Gênero</a></p>
+            <p><a onclick="carregaCadastrosAuxiliares(this.name)" name="animes_autor">Autor</a></p>
+            <p><a onclick="carregaCadastrosAuxiliares(this.name)" name="animes_origem">Origem</a></p>
+            <p><a onclick="carregaCadastrosAuxiliares(this.name)" name="animes_status">Status</a></p>
+            <p><a onclick="carregaCadastrosAuxiliares(this.name)" name="animes_nome_anime">Nome do Anime</a></p>
+
           </div>
         </div>
       </div>
@@ -94,6 +97,7 @@
   </section>
   <!-- fim da section Pagina Incial -->
 
+  <!-- Início da section Nova Avaliação -->
   <section id="sectionNovaAvaliacao">
     <html>
 
@@ -105,19 +109,16 @@
     <form>
       <div>
         <label for="nomeAnime">Nome do anime</label>
-        <input type="text" id="nomeAnime" name="nomeAnime" onchange="onchangeCPF_CNPJ()" required>
+        <select style="display: block; width: 30%;" type="text" id="nomeAnime" name="nomeAnime"
+          onchange="onchangeSelect()" required>
+        </select>
 
         <label for="autor">Autor</label>
-        <select style="display: block; width: 30%;" class="autor" type="text" id="autor" name="autor"
-          onchange="onchangeCPF_CNPJ()" required>
-          <option value="1">Item 1</option>
-          <option value="2">Item 2</option>
-          <option value="3">Item 3</option>
+        <select style="display: block; width: 30%;" type="text" id="autor" name="autor" required>
         </select>
+
         <label for="genero">Gênero</label>
-        <select name="genero" id="genero">
-          <option value="1">Shounen</option>
-          <option value="2">Shoujo</option>
+        <select style="display: block; width: 30%;" type="text" name="genero" id="genero" required>
         </select>
       </div>
       <label for="temporadaAvaliacao">Temporada da avaliação</label>
@@ -130,22 +131,21 @@
         <label for="episodios">Temporadas</label>
         <input class="inputDiv1" type="text" id="temporadas" name="temporadas" required>
       </div>
-      <div>
-        <label for="lancamento">Lançamento</label>
-        <input class="inputDiv2" style="width: 62px;" placeholder="MM/AAAA" type="text" id="lancamento"
+      <div style="display: inline;">
+        <label style="display: inline;" for="lancamento">Lançamento</label>
+        <input class="inputDiv2" style="width: 62px; display: inline;" placeholder="MM/AAAA" type="text" id="lancamento"
           name="lancamento" required>
-        <label for="status">Status</label>
-        <select name="status" id="status">
-          <option value="1">Finalizado</option>
-          <option value="2">Em andamento</option>
-        </select>
+
+        <div style="display: inline; width: 100%;">
+          <label style="display: inline;" for="status">Status</label>
+          <select style="display: inline; width: 13%;" name="status" id="statusAnime">
+          </select>
+        </div>
       </div>
 
       <h4 style="margin-bottom: 5px; margin-top: 0px;">Origem</h4>
       <label for="origem">Origem</label>
-      <select name="origem" id="origem">
-        <option value="1">Mangá</option>
-        <option value="2">Light Novel</option>
+      <select style="display: inline; width: 15%;" name="origem" id="origem">
       </select>
 
       <label for="telefone">Volumes</label>
@@ -156,16 +156,14 @@
         <input class="inputDiv2" placeholder="Ano" type="number" id="lancamento" name="lancamento" required>
 
         <label for="status">Status</label>
-        <select name="status" id="status">
-          <option value="1">Finalizado</option>
-          <option value="2">Em andamento</option>
+        <select style="display: inline; width: 13%;" name="status" id="statusOrigem">
         </select>
       </div>
       <div>
         <label for="adicionais">Adicionais</label>
         <input class="inputDiv1" style="margin-left: -13px; margin-bottom: 15px;" type="checkbox" id="adicionais"
-          name="dropado">
-        <div id="divAdicionais">
+          name="dropado" onchange="abreFechaAdicionais(this.checked)">
+        <div id="divAdicionais" style="display: none;">
           <label for="ovas">Ovas</label>
           <input class="inputDiv2" type="number" id="ovas" name="ovas">
           <label for="filmes">Filmes</label>
@@ -175,26 +173,29 @@
 
 
       <label for="sinopse">Sinopse</label>
-      <input class="inputSinopse" type="text" id="sinopse" name="sinopse" required>
+      <textarea class="inputSinopse" type="text" id="sinopse" name="sinopse" required>
+      </textarea>
 
       <label for="resumo">Resumo</label>
-      <input class="inputResumo" type="text" id="resumo" name="resumo" required>
+      <textarea class="inputResumo" type="text" id="resumo" name="resumo" required>
+      </textarea>
 
       <label for="enredo">Enredo</label>
-      <input class="inputDiv1" type="text" id="enredo" name="enredo" required>
+      <input class="inputDiv1" type="text" id="enredo" name="enredo" required oninput="calcularNotaFinal(this)">
 
       <label for="enrolacao">Enrolação</label>
-      <input class="inputDiv1" type="text" id="enrolacao" name="enrolacao" required>
+      <input class="inputDiv1" type="text" id="enrolacao" name="enrolacao" required oninput="calcularNotaFinal(this)">
       <div>
         <label for="animacao">Animação</label>
-        <input class="inputDiv1" type="text" id="animacao" name="animacao" required>
+        <input class="inputDiv1" type="text" id="animacao" name="animacao" required oninput="calcularNotaFinal(this)">
 
         <label for="desenvolvimento">Desenvolvimento</label>
-        <input class="inputDiv1" type="text" id="desenvolvimento" name="desenvolvimento" required>
+        <input class="inputDiv1" type="text" id="desenvolvimento" name="desenvolvimento" required oninput="calcularNotaFinal(this)">
       </div>
 
       <label for="critica">Crítica</label>
-      <input class="inputSinopse" type="text" id="critica" name="critica" required>
+      <textarea class="inputSinopse" type="text" id="critica" name="critica" required>
+      </textarea>
 
       <input class="inputDiv1" style="margin-left: -13px; margin-bottom: 15px;" type="checkbox" id="dropado"
         name="dropado">
@@ -220,7 +221,10 @@
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarGenero"
       name="pesquisar" maxlength="250">
-    <button class="add-button" id="buttonCadastraGenero" onclick="abreNovoGenero()">+ Novo Gênero</button>
+      
+    <button class="add-button" id="buttonCadastraGenero" onclick="abreNovoCadastroAuxiliar(this.name)"
+     name="animes_genero">+ Novo Gênero</button>
+
     <div id="divConsultaGenero" style="display: none;">
       <table id="tableGenero">
         <tr>
@@ -240,7 +244,10 @@
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarAutor"
       name="pesquisar" maxlength="250">
-    <button class="add-button" id="buttonCadastraAutor" onclick="abreNovoAutor()">+ Novo Autor</button>
+
+    <button class="add-button" id="buttonCadastraAutor" onclick="abreNovoCadastroAuxiliar(this.name)"
+     name="animes_autor">+ Novo Autor</button>
+
     <div id="divConsultaAutor" style="display: none;">
       <table id="tableAutor">
         <tr>
@@ -260,7 +267,10 @@
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarOrigem"
       name="pesquisar" maxlength="250">
-    <button class="add-button" id="buttonCadastraOrigem" onclick="abreNovoOrigem()">+ Nova Origem</button>
+
+    <button class="add-button" id="buttonCadastraOrigem" onclick="abreNovoCadastroAuxiliar(this.name)" 
+    name="animes_origem">+ Nova Origem</button>
+
     <div id="divConsultaOrigem" style="display: none;">
       <table id="tableOrigem">
         <tr>
@@ -273,6 +283,50 @@
     </html>
   </section>
   <!-- fim da section Origem -->
+
+  <!-- início da section status -->
+  <section id="sectionStatus" hidden>
+    <html>
+    <h1 class="corTexto" tabindex="0">Cadastro de Status</h1>
+
+    <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarStatus"
+      name="pesquisar" maxlength="250">
+
+    <button class="add-button" id="buttonCadastraStatus" onclick="abreNovoCadastroAuxiliar(this.name)"
+     name="animes_status">+ Novo Status</button>
+
+    <div id="divConsultaStatus" style="display: none;">
+      <table id="tableStatus">
+        <tr>
+          <th>Id</th>
+          <th>Nome do Status</th>
+        </tr>
+
+      </table>
+
+    </html>
+  </section>
+  <!-- fim da section NomeAnime -->
+  <section id="sectionNomeAnime" hidden>
+    <html>
+    <h1 class="corTexto" tabindex="0">Cadastro de Nome de Animes</h1>
+
+    <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarNomeAnime"
+      name="pesquisar" maxlength="250">
+    <button class="add-button" id="buttonCadastraNomeAnime" name="animes_nome_anime" onclick="abreNovoCadastroAuxiliar(this.name)">
+      + Novo Nome Anime</button> <!--name é o nome da Tabela do banco de dados-->
+    <div id="divConsultaNomeAnime" style="display: none;">
+      <table id="tableNomeAnime">
+        <tr>
+          <th>Id</th>
+          <th>Nome do Anime</th>
+        </tr>
+
+      </table>
+
+    </html>
+  </section>
+  <!-- fim da section NomeAnime -->
 
   <div id="popup" class="modal">
     <div class="modal-content">
@@ -289,9 +343,9 @@
 
 </html>
 <script src="/JS/index.js"></script>
-<script src="/JS/sectionGenero.js"></script>
-<script src="/JS/sectionAutor.js"></script>
-<script src="/JS/sectionOrigem.js"></script>
+<script src="/JS/sectionsAuxiliares.js"></script>
+
+
 
 
 
