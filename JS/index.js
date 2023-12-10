@@ -1,4 +1,5 @@
-var main = document.getElementById("main");
+const main = document.getElementById("main");
+const novaAval = document.getElementById("sectionNovaAvaliacao").innerHTML;
 
 //#region Botões do menu lateral
 function AbrirFecharSideBar() {
@@ -27,9 +28,10 @@ function carregaPaginaInicial() {
 };
 
 function carregaNovaAvaliacao() {
-    var sectionMain = document.getElementById("sectionNovaAvaliacao");
-    main.innerHTML = sectionMain.innerHTML;
+    main.innerHTML = novaAval;
+    document.getElementById("sectionNovaAvaliacao").innerHTML = "";
     personalizaSelectElements();
+    document.querySelector('form').addEventListener('submit', previneEnvioFormulario);
 };
 
 function abreFechaCadastrosAuxiliares() {
@@ -42,121 +44,15 @@ function abreFechaCadastrosAuxiliares() {
     }
 };
 
-function carregaGenero() {
-    sectionGenero = document.getElementById("sectionGenero");
-    main.innerHTML = sectionGenero.innerHTML;
-    consultaGenero();
-    pesquisarGeneroPorNomeId();
-};
-
-function carregaAutor() {
-    sectionGenero = document.getElementById("sectionAutor");
-    main.innerHTML = sectionGenero.innerHTML;
-    consultaAutor();
-    pesquisarAutorPorNomeId();
-};
-
-function carregaOrigem() {
-    sectionGenero = document.getElementById("sectionOrigem");
-    main.innerHTML = sectionGenero.innerHTML;
-    consultaOrigem();
-    pesquisarOrigemPorNomeId();
-};
-
-function carregaStatus() {
-    sectionGenero = document.getElementById("sectionStatus");
-    main.innerHTML = sectionGenero.innerHTML;
-    consultaStatus();
-    pesquisarStatusPorNomeId();
-};
-
 function carregaCadastrosAuxiliares(nomeTabelaCadastroAuxiliar) {
     let nomeCamelCase = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, true);
-    sectionGenero = document.getElementById(`section${nomeCamelCase}`);
-    main.innerHTML = sectionGenero.innerHTML;
+    sectionCadastrosAuxiliares = document.getElementById(`section${nomeCamelCase}`);
+    main.innerHTML = sectionCadastrosAuxiliares.innerHTML;
+
     consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
     pesquisarCadastroAuxiliarPorNomeId(nomeTabelaCadastroAuxiliar);
 };
 //#endregion
-
-function personalizaSelectElements() {
-    var selectElements = document.querySelectorAll("select");
-    var options = [];
-    selectElements.forEach(async function (selectElement) {
-        switch (selectElement.name) {
-            case "nomeAnime":
-                options = await obterOpcoesSelectElment("nome_anime", "GET");
-                break;
-            case "autor":
-                options = await obterOpcoesSelectElment("autor", "GET");
-                break;
-            case "genero":
-                options = await obterOpcoesSelectElment("genero", "GET");
-                break;
-            case "status":
-                options = await obterOpcoesSelectElment("status", "GET");
-                break;
-            case "origem":
-                options = await obterOpcoesSelectElment("origem", "GET");
-                break;
-        };
-        $(selectElement).selectize({
-            options: options,
-            placeholder: 'Procurar pelo nome...',
-            width: "30px",
-            loadingClass: "select",
-        });
-        // var selectize = selectElement.selectize;
-        // selectize.clear();
-    });
-    document.getElementById("statusAnime").style.display = "inline";
-};
-
-async function obterOpcoesSelectElment(tabela, metodo) {
-    let options = [];
-    let arrayJson = JSON.parse(await consultaTodosRegistros(tabela, metodo));
-    arrayJson.forEach(registro => {
-        let option = { value: registro.Id, text: `${registro.Id} - ${registro.Nome}` };
-        options.push(option);
-    });
-    return options;
-};
-
-function abreFechaAdicionais(checado) {
-    var divAdicionais = document.getElementById("divAdicionais");
-    if (checado) {
-        divAdicionais.style.display = "block";
-    }
-    else {
-        divAdicionais.style.display = "none";
-    }
-};
-
-function calcularNotaFinal(elementoChamada) {
-    if (elementoChamada.value > 10 || elementoChamada.value < 0) {
-        alert("Insira um valor entre 0 e 10!");
-        calcularNotaFinal(elementoChamada.value = 0);
-        elementoChamada.value = "";
-        elementoChamada.focus();
-    }
-    else {
-        var enredo = document.getElementById("enredo").value;
-        var valorEnredo = enredo != null && enredo !=""? enredo: 0;
-
-        var enrolacao = document.getElementById("enrolacao").value;
-        var valorEnrolacao = enrolacao != null && enrolacao !=""? enrolacao: 0;
-
-        var animacao = document.getElementById("animacao").value;
-        var valorAnimacao = animacao != null && animacao !=""? animacao: 0;
-
-        var desenvolvimento = document.getElementById("desenvolvimento").value;
-        var valorDesenv = desenvolvimento != null && desenvolvimento !=""? desenvolvimento: 0;
-
-        var notaFinal =((parseFloat(valorEnredo) + parseFloat(valorEnrolacao) + 
-                        parseFloat(valorAnimacao) + parseFloat(valorDesenv))/4).toFixed(2);
-        document.getElementById("notaFinal").value = notaFinal;
-    }
-};
 
 //#region funções globais de consulta
 
@@ -172,12 +68,27 @@ async function consultaTodosRegistros(tabela, metodo) {
         })
         .then(function (result) {
             console.log(result);
-            return (result);
+            return result;
         })
         .catch(function (error) {
             console.log(error);
             alert("Erro ao chamar API: " + error);
         });
+};
+
+function validaTexto(texto){
+    if (texto == null || texto == "") {
+        return false;
+    }
+    else {
+        let textoSemEspaços = texto.replace(/\s/g, "");
+        if (textoSemEspaços == "") {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 };
 
 //#endregion

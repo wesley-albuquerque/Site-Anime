@@ -1,27 +1,60 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
+
 <head>
     <title>Buscador de Registros com Select</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
 </head>
+
 <body>
     <select id="searchSelect"></select>
 
     <script>
-        $(document).ready(function() {
-            $('#searchSelect').selectize({
-                options: [
-                    { value: 1, text: "Item 1" },
-                    { value: 2, text: "Item 2" },
-                    { value: 3, text: "Item 3" },
-                    // Adicione mais opções conforme necessário
-                ],
-                placeholder: 'Selecione um item...',
-                create: false // Desabilita a criação de novos itens
-            });
+        var elementoSelectize = $('#searchSelect');
+
+        elementoSelectize.selectize({
+            options: [
+                { value: 1, text: "Item 1" },
+                { value: 2, text: "Item 2" },
+                { value: 3, text: "Item 3" },
+                { value: 4, text: "Item 4" },
+
+                // Adicione mais opções conforme necessário
+            ],
+            create: function (input) {
+                return {
+                    value: "99",
+                    text: input,
+                };
+            },
+            onOptionAdd: function (value, data){
+                    console.log("passou aqui");
+                    alert("ok")
+                    testeSelect(data.value, data.text);
+            },
+            placeholder: 'Selecione um item...',
         });
+        function testeSelect(valor, texto){
+        elementoSelectize[0].selectize.clearOptions();
+        elementoSelectize[0].selectize.off('option_add', this.onOptionAdd);
+        elementoSelectize[0].selectize.addOption([{ value: 1, text: 'Mod 1'},
+
+        { value: 2, text: 'Mod 2'},
+
+        { value: 3, text: 'Mod 3'},
+
+        { value: 4, text: 'Mod 4'},
+        { value: 5, text: 'Mod 5'},
+        { value: valor, text: texto}
+        ]);
+        elementoSelectize[0].selectize.on('option_add', this.onOptionAdd);
+        elementoSelectize[0].selectize.refreshOptions(false);
+        };
+        console.log(elementoSelectize.selectize)
     </script>
 </body>
-</html>
+
+</html> -->

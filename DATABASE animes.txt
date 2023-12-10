@@ -1,27 +1,27 @@
-CREATE TABLE genero (
+CREATE TABLE animes_genero (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	nome 	VARCHAR(40) NOT NULL
 );
 
-CREATE TABLE autor (
-	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	nome 	VARCHAR(40) NOT NULL
-	
-);
-
-CREATE TABLE origem (
+CREATE TABLE animes_autor (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	nome 	VARCHAR(40) NOT NULL
 	
 );
 
-CREATE TABLE status (
+CREATE TABLE animes_origem (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	nome 	VARCHAR(40) NOT NULL
 	
 );
 
-CREATE TABLE nome_anime(
+CREATE TABLE animes_status (
+	id 	INT AUTO_INCREMENT PRIMARY KEY,
+	nome 	VARCHAR(40) NOT NULL
+	
+);
+
+CREATE TABLE animes_nome_anime(
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	nome 	VARCHAR(40) NOT NULL
 	
@@ -29,7 +29,7 @@ CREATE TABLE nome_anime(
 
 
 
-CREATE TABLE avaliacao (
+CREATE TABLE animes_avaliacao (
   	id		INT AUTO_INCREMENT,
   	nome_anime_id   varchar(40) NOT NULL,
   	autor_id     	INT NOT NULL,
@@ -52,10 +52,11 @@ CREATE TABLE avaliacao (
   	animacao	INT NOT NULL,
   	desenvolvimento	INT NOT NULL,
   	critica		varchar(500)   NOT NULL,
-	dropado		INT NOT NULL,
+	dropado		BOOL NOT NULL,
   	nota_final 	decimal(2, 2)  NOT NULL,
 	data_criacao	DATA NOT NULL,
 	data_mod	DATA NOT NULL,
+		FOREIGN KEY (nome_id) REFERENCES autor(id) ON DELETE RESTRICT,
 		FOREIGN KEY (autor_id) REFERENCES autor(id) ON DELETE RESTRICT,
 		FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE RESTRICT,
 		FOREIGN KEY (origem_id) REFERENCES origem(id) ON DELETE RESTRICT,

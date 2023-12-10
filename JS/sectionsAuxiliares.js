@@ -24,42 +24,72 @@ function abreNovoCadastroAuxiliar(nomeTabelaCadastroAuxiliar) {
     popup.style.display = "block";
     h2PopUp.innerText = `Novo ${nomeFormatado}`;
     idPopUp.innerText = "";
-    labelNomePopUp.innerText = "Nome do Anime";
+    labelNomePopUp.innerText = `Nome do ${nomeFormatado}`;
     nomePopUp.value = "";
     buttonSalvarPopUp.innerText = "Cadastrar";
     buttonSalvarPopUp.onclick = function () {
         cadastraCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
     };
     buttonDeletePopUp.style.display = "none";
+    nomePopUp.focus();
 };
 
+function fechaButtonPopUp() {
+    popup.style.display = 'none';
+};
+
+window.addEventListener('click', (event) => {
+    if (event.target === popup) {
+        popup.style.display = 'none';
+    }
+});
+
 //CRUD
-function cadastraCadastroAuxiliar(nomeTabelaCadastroAuxiliar) {
+function cadastraCadastroAuxiliar(nomeTabelaCadastroAuxiliar, nomeRegistro) {
+    if (nomeRegistro != null && nomeRegistro != "") {
+        nomePopUp.value = nomeRegistro;
+    }
+    if (!validaTexto(nomePopUp.value)) {
+        alert("Insira um nome válido");
+        nomePopUp.value = "";
+        nomePopUp.focus();
+        return;
+    }
     let nomeFormatado = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, false);
     let data = JSON.stringify({
         Nome: nomePopUp.value
     });
 
-    fetch(`https://localhost:7026/api-anime/insere-${nomeTabelaCadastroAuxiliar}`, {
-        method: "Post",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: data
-    })
-        .then(function (response) {
-            return response.text()
+    return new Promise(function (resolve, reject) {
+        fetch(`https://localhost:7026/api-anime/insere-${nomeTabelaCadastroAuxiliar}`, {
+            method: "Post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
         })
-        .then(function (result) {
-            console.log(result);
-            alert(`${nomeFormatado} cadastrado com sucesso`);
-            popup.style.display = "none";
-            consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
-        })
-        .catch(function (error) {
-            console.log("Erro ao chamar API:", error);
-            alert("Erro ao chamar API:", error);
-        })
+            .then(function (response) {
+                return response.text()
+            })
+            .then(function (result) {
+                console.log(result);
+                if (result == `${nomeTabelaCadastroAuxiliar} cadastrado com sucesso`) {
+                    alert(`${nomeFormatado} cadastrado com sucesso`);
+                    popup.style.display = "none";
+                    consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
+                    resolve(true);
+                }
+                else {
+                    alert(result);
+                    reject(false);
+                }
+
+            })
+            .catch(function (error) {
+                console.log("Erro ao chamar API:", error);
+                alert("Erro ao chamar API:", error);
+            })
+    });
 };
 
 function consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar) {
@@ -68,10 +98,14 @@ function consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar) {
     let tableGenero = document.getElementById(`table${nomeCamelCase}`);
     let trElements = tableGenero.getElementsByTagName("tr");
     while (trElements.length > 1) {
-        tableGenero.removeChild(trElements[1]);
+        if (!tableGenero.tBodies[1]) {
+            tableGenero.removeChild(trElements[1]);
+        }
+        else{
+            tableGenero.removeChild(tableGenero.tBodies[1]);
+        }
     }
     consultaTodosRegistros(nomeTabelaCadastroAuxiliar, "GET").then(function (result) {
-        console.log(result);
         if (result != `Nenhum ${nomeTabelaCadastroAuxiliar} cadastrado`) {
             divConsultaCadastroAuxiliar.style.display = "block";
             let jsonResponse = JSON.parse(result);
@@ -136,7 +170,7 @@ function abreEdicaoCadastroAuxiliar(id, nomeTabelaCadastroAuxiliar) {
     buttonDeletePopUp.onclick = function () {
         deleteCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar);
     };
-
+    nomePopUp.focus();
     fetch(`https://localhost:7026/api-anime/consulta-${nomeTabelaCadastroAuxiliar}/${id}`, {
         method: "Get",
         headers: {
@@ -159,6 +193,12 @@ function abreEdicaoCadastroAuxiliar(id, nomeTabelaCadastroAuxiliar) {
 
 };
 function atualizaCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
+    if (!validaTexto(nomePopUp.value)) {
+        alert("Insira um nome válido");
+        nomePopUp.value = "";
+        nomePopUp.focus();
+        return;
+    }
     let nomeFormatado = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, false);
     var data = JSON.stringify({
         Id: id,
@@ -182,6 +222,9 @@ function atualizaCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
                 popup.style.display = "none";
                 consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
             }
+            else {
+                alert(result);
+            }
         })
         .catch(function (error) {
             console.log("Erro ao chamar API: ", error);
@@ -190,26 +233,28 @@ function atualizaCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
 };
 
 function deleteCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
-    let nomeFormatado = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, false)
-    fetch(`https://localhost:7026/api-anime/delete-${nomeTabelaCadastroAuxiliar}/${id}`, {
-        method: "Delete",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-        .then(function (response) {
-            return response.text();
-        })
-        .then(function (result) {
-            if (result == `${nomeTabelaCadastroAuxiliar} excluído com sucesso`) {
-                alert(`${nomeFormatado} excluído com sucesso`);
-                popup.style.display = "none";
-                consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
+    if (confirm("Confirma exclusão? Está operação não pode ser desfeita!")) {
+        let nomeFormatado = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, false)
+        fetch(`https://localhost:7026/api-anime/delete-${nomeTabelaCadastroAuxiliar}/${id}`, {
+            method: "Delete",
+            headers: {
+                "Content-Type": "application/json"
             }
         })
-        .catch(function (error) {
-            alert("Erro ao chamar API: ", error);
-        });
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (result) {
+                if (result == `${nomeTabelaCadastroAuxiliar} excluído com sucesso`) {
+                    alert(`${nomeFormatado} excluído com sucesso`);
+                    popup.style.display = "none";
+                    consultaCadastroAuxiliar(nomeTabelaCadastroAuxiliar);
+                }
+            })
+            .catch(function (error) {
+                alert("Erro ao chamar API: ", error);
+            });
+    }
 };
 
 function formataNomeCadastroAuxiliar(nome, camelCase) {
@@ -227,4 +272,4 @@ function formataNomeCadastroAuxiliar(nome, camelCase) {
         default:
             return "Nome não reconhecido";
     };
-}
+};

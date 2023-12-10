@@ -44,52 +44,6 @@
 
     <div id="divResultado" style="display: none;">
       <h4>Resultado</h4><br>
-      <label for="cpf_cnpj">CPF/CNPJ</label>
-      <input id="rCpf_cnpj" name="cpf_cnpj" type="text" readonly="true">
-
-      <label for="nome">Nome/Razão Social</label>
-      <input id="rNomeRazao" name="nome" type="text">
-
-      <div id="divfantasia" style="display: none">
-        <label for="fantasia">Nome Fantasia</label>
-        <input id="rNomeFantasia" name="fantasia" type="text">
-      </div>
-
-      <label for="telefone">Telefone</label>
-      <input id="rTelefone" name="telefone" type="text">
-
-      <label for="celular">Celular</label>
-      <input id="rCelular" name="celular" type="text">
-
-      <label for="email">E-mail</label>
-      <input id="rEmail" name="email" type="text">
-
-      <label for="CEP">CEP</label>
-      <input id="rCep" name="CEP" type="text" onchange="cepOnchange()">
-
-      <label for="logradouro">Logradouro</label>
-      <input id="rLogradouro" name="logradouro" type="text">
-
-      <label for="complemento">Complemento</label>
-      <input id="rComplemento" name="complemento" type="text">
-
-      <label for="numero">Número</label>
-      <input id="rNumero" name="numero" type="text">
-
-      <label for="bairro">Bairro</label>
-      <input id="rBairro" name="bairro" type="text">
-
-      <label for="cidade">Cidade</label>
-      <input id="rCidade" name="cidade" type="text">
-
-      <label for="estado">Estado</label>
-      <input id="rEstado" name="estado" type="text">
-
-      <label for="pais">País</label>
-      <input id="rPais" name="pais" type="text">
-      <button onclick="limparClientes()">Limpar</button>
-      <button onclick="atualizaDados()">Salvar</button>
-      <button onclick="deletaCliente()">Excluir</button>
     </div>
     </div>
 
@@ -98,7 +52,7 @@
   <!-- fim da section Pagina Incial -->
 
   <!-- Início da section Nova Avaliação -->
-  <section id="sectionNovaAvaliacao">
+  <section id="sectionNovaAvaliacao" hidden>
     <html>
 
     <head>
@@ -109,8 +63,7 @@
     <form>
       <div>
         <label for="nomeAnime">Nome do anime</label>
-        <select style="display: block; width: 30%;" type="text" id="nomeAnime" name="nomeAnime"
-          onchange="onchangeSelect()" required>
+        <select style="display: block; width: 30%;" type="text" id="nomeAnime" name="nomeAnime" required>
         </select>
 
         <label for="autor">Autor</label>
@@ -138,25 +91,25 @@
 
         <div style="display: inline; width: 100%;">
           <label style="display: inline;" for="status">Status</label>
-          <select style="display: inline; width: 13%;" name="status" id="statusAnime">
+          <select style="display: inline; width: 13%;" name="status" id="statusAnime" required>
           </select>
         </div>
       </div>
 
       <h4 style="margin-bottom: 5px; margin-top: 0px;">Origem</h4>
       <label for="origem">Origem</label>
-      <select style="display: inline; width: 15%;" name="origem" id="origem">
+      <select style="display: inline; width: 15%;" name="origem" id="origem" required>
       </select>
 
-      <label for="telefone">Volumes</label>
-      <input class="inputDiv2" type="tel" id="telefone" name="telefone" required>
+      <label for="volumes">Volumes</label>
+      <input class="inputDiv2" type="tel" id="volumes" name="volumes" required>
 
       <div>
         <label for="lancamento">Lançamento</label>
         <input class="inputDiv2" placeholder="Ano" type="number" id="lancamento" name="lancamento" required>
 
         <label for="status">Status</label>
-        <select style="display: inline; width: 13%;" name="status" id="statusOrigem">
+        <select style="display: inline; width: 13%;" name="status" id="statusOrigem" required>
         </select>
       </div>
       <div>
@@ -198,14 +151,13 @@
       </textarea>
 
       <input class="inputDiv1" style="margin-left: -13px; margin-bottom: 15px;" type="checkbox" id="dropado"
-        name="dropado">
+        name="dropado" onclick="alteraCamposObrigatorios(this)">
       <label for="dropado">Dropado</label>
 
       <label style="display: block;" for="notaFinal">Nota final</label>
-      <input readonly class="inputReadyonly" style="display: block;" type="text" id="notaFinal" name="notaFinal"
-        required>
+      <input readonly class="inputReadyonly" style="display: block;" type="text" id="notaFinal" name="notaFinal">
 
-      <button type="submit">Cadastrar</button>
+      <button type="submit" id="cadastraNovaAvalicao">Cadastrar</button>
 
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -221,7 +173,7 @@
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarGenero"
       name="pesquisar" maxlength="250">
-      
+
     <button class="add-button" id="buttonCadastraGenero" onclick="abreNovoCadastroAuxiliar(this.name)"
      name="animes_genero">+ Novo Gênero</button>
 
@@ -263,7 +215,7 @@
 
   <section id="sectionOrigem" hidden>
     <html>
-    <h1 class="corTexto" tabindex="0">Cadastro de Autor</h1>
+    <h1 class="corTexto" tabindex="0">Cadastro de Origem</h1>
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarOrigem"
       name="pesquisar" maxlength="250">
@@ -344,6 +296,8 @@
 </html>
 <script src="/JS/index.js"></script>
 <script src="/JS/sectionsAuxiliares.js"></script>
+<script src="/JS/sectionNovaAvaliacao.js"></script>
+
 
 
 
