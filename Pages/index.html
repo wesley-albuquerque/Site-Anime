@@ -40,10 +40,24 @@
     <h1 class="corTexto" tabindex="0">Animes</h1>
 
     <input placeholder="Pesquisar por nome ou autor" type="text" id="pesquisar" name="pesquisar" maxlength="250">
-    <button onclick="pesquisar()">Buscar</button>
+    <button class="add-button" id="buttonFiltrosAvaliacao" onclick="filtros(this.name)"
+      name="animes_genero">Filtros</button>
 
-    <div id="divResultado" style="display: none;">
-      <h4>Resultado</h4><br>
+    <div id="divAvaliacao" style="display: block;">
+      <table id="tableAvaliacao">
+        <tr>
+          <th>Id</th>
+          <th>Nome do Anime</th>
+          <th>Autor</th>
+          <th>Gênero</th>
+          <th>Lançamento</th>
+          <th>Temporada<br> da Avaliação</th>
+          <th>Nota final</th>
+          <th>Data da criação</th>
+          <th>Data da modficação</th>
+        </tr>
+
+      </table>
     </div>
     </div>
 
@@ -86,8 +100,8 @@
       </div>
       <div style="display: inline;">
         <label style="display: inline;" for="lancamento">Lançamento</label>
-        <input class="inputDiv2" style="width: 62px; display: inline;" placeholder="MM/AAAA" type="text" id="lancamento"
-          name="lancamento" required>
+        <input class="inputDiv2" style="width: 80px; display: inline;" pattern="(0[1-9]|1[0-2])/\d{4}"
+          placeholder="MM/AAAA" type="month" id="lancamento" name="lancamento" required>
 
         <div style="display: inline; width: 100%;">
           <label style="display: inline;" for="status">Status</label>
@@ -105,8 +119,9 @@
       <input class="inputDiv2" type="tel" id="volumes" name="volumes" required>
 
       <div>
-        <label for="lancamento">Lançamento</label>
-        <input class="inputDiv2" placeholder="Ano" type="number" id="lancamento" name="lancamento" required>
+        <label for="lancamentoOrigem">Lançamento</label>
+        <input class="inputDiv2" placeholder="Ano" type="number" min="1950" max="2050" id="lancamentoOrigem"
+          name="lancamentoOrigem" style="width: 62px;" required>
 
         <label for="status">Status</label>
         <select style="display: inline; width: 13%;" name="status" id="statusOrigem" required>
@@ -134,16 +149,20 @@
       </textarea>
 
       <label for="enredo">Enredo</label>
-      <input class="inputDiv1" type="text" id="enredo" name="enredo" required oninput="calcularNotaFinal(this)">
+      <input class="inputDiv1" type="text" id="enredo" name="enredo" required oninput="calcularNotaFinal(this)"
+        required>
 
       <label for="enrolacao">Enrolação</label>
-      <input class="inputDiv1" type="text" id="enrolacao" name="enrolacao" required oninput="calcularNotaFinal(this)">
+      <input class="inputDiv1" type="text" id="enrolacao" name="enrolacao" required oninput="calcularNotaFinal(this)"
+        required>
       <div>
         <label for="animacao">Animação</label>
-        <input class="inputDiv1" type="text" id="animacao" name="animacao" required oninput="calcularNotaFinal(this)">
+        <input class="inputDiv1" type="text" id="animacao" name="animacao" required oninput="calcularNotaFinal(this)"
+          required>
 
         <label for="desenvolvimento">Desenvolvimento</label>
-        <input class="inputDiv1" type="text" id="desenvolvimento" name="desenvolvimento" required oninput="calcularNotaFinal(this)">
+        <input class="inputDiv1" type="text" id="desenvolvimento" name="desenvolvimento" required
+          oninput="calcularNotaFinal(this)" required>
       </div>
 
       <label for="critica">Crítica</label>
@@ -175,7 +194,7 @@
       name="pesquisar" maxlength="250">
 
     <button class="add-button" id="buttonCadastraGenero" onclick="abreNovoCadastroAuxiliar(this.name)"
-     name="animes_genero">+ Novo Gênero</button>
+      name="animes_genero">+ Novo Gênero</button>
 
     <div id="divConsultaGenero" style="display: none;">
       <table id="tableGenero">
@@ -198,7 +217,7 @@
       name="pesquisar" maxlength="250">
 
     <button class="add-button" id="buttonCadastraAutor" onclick="abreNovoCadastroAuxiliar(this.name)"
-     name="animes_autor">+ Novo Autor</button>
+      name="animes_autor">+ Novo Autor</button>
 
     <div id="divConsultaAutor" style="display: none;">
       <table id="tableAutor">
@@ -220,8 +239,8 @@
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarOrigem"
       name="pesquisar" maxlength="250">
 
-    <button class="add-button" id="buttonCadastraOrigem" onclick="abreNovoCadastroAuxiliar(this.name)" 
-    name="animes_origem">+ Nova Origem</button>
+    <button class="add-button" id="buttonCadastraOrigem" onclick="abreNovoCadastroAuxiliar(this.name)"
+      name="animes_origem">+ Nova Origem</button>
 
     <div id="divConsultaOrigem" style="display: none;">
       <table id="tableOrigem">
@@ -245,7 +264,7 @@
       name="pesquisar" maxlength="250">
 
     <button class="add-button" id="buttonCadastraStatus" onclick="abreNovoCadastroAuxiliar(this.name)"
-     name="animes_status">+ Novo Status</button>
+      name="animes_status">+ Novo Status</button>
 
     <div id="divConsultaStatus" style="display: none;">
       <table id="tableStatus">
@@ -265,7 +284,8 @@
 
     <input style="display: inline;" placeholder="Pesquisar por nome ou id" type="text" id="pesquisarNomeAnime"
       name="pesquisar" maxlength="250">
-    <button class="add-button" id="buttonCadastraNomeAnime" name="animes_nome_anime" onclick="abreNovoCadastroAuxiliar(this.name)">
+    <button class="add-button" id="buttonCadastraNomeAnime" name="animes_nome_anime"
+      onclick="abreNovoCadastroAuxiliar(this.name)">
       + Novo Nome Anime</button> <!--name é o nome da Tabela do banco de dados-->
     <div id="divConsultaNomeAnime" style="display: none;">
       <table id="tableNomeAnime">
@@ -290,6 +310,19 @@
       <button id="buttonSalvarPopUp">Salvar</button>
       <button onclick="fechaButtonPopUp()">Cancelar</button>
       <button id="buttonDeletePopUp">Excluir</button>
+    </div>
+  </div>
+
+  <div id="popupAvaliacao" class="modal">
+    <div class="modal-content-avaliacao" id="divContentAvaliacao">
+      <span id="closePopUpAvaliacao" class="close" onclick="fechaButtonPopUpAvaliacao()">&times;</span>
+      <div id="divButtons" class="buttonAval">
+        <button id="buttonEditarPopUpAvaliacao">Editar</button>
+        <button id="buttonCancelarPopUpAvaliacao"
+          onclick="fechaButtonPopUpAvaliacao()">Cancelar</button>
+        <button id="buttonExcluirPopUpAvaliacao">Excluir</button>
+      </div>
+
     </div>
   </div>
 

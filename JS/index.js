@@ -25,6 +25,7 @@ function AbrirFecharSideBar() {
 function carregaPaginaInicial() {
     var sectionPaginaInicial = document.getElementById("sectionPaginaInicial");
     main.innerHTML = sectionPaginaInicial.innerHTML;
+    OnloadConsultaAvalicao();
 };
 
 function carregaNovaAvaliacao() {

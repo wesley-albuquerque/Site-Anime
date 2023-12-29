@@ -23,44 +23,70 @@ CREATE TABLE animes_status (
 
 CREATE TABLE animes_nome_anime(
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	nome 	VARCHAR(40) NOT NULL
+	nome 	VARCHAR(100) NOT NULL
 	
 );
 
 
 
 CREATE TABLE animes_avaliacao (
-  	id		INT AUTO_INCREMENT,
-  	nome_anime_id   varchar(40) NOT NULL,
-  	autor_id     	INT NOT NULL,
-	genero_id 	INT NOT NULL,
-	temporada_aval	INT NOT NULL,
- 	episodios 	INT NOT NULL,
-	temporadas	INT NOT NULL,
-	lancamento_anime DATE NOT NULL,
-	status_anime_id	INT NOT NULL,	
-  	origem_id	INT NOT NULL,
-	volumes		INT NOT NULL,
-  	lancamento_origem YEAR NOT NULL,
-  	status_origem_id INT NOT NULL,
-	ovas		INT,
-	filmes		INT,
-  	sinopse		varchar(100),
-  	resumo		varchar(500) NOT NULL,
-  	enredo		INT NOT NULL,
-  	enrolacao	INT NOT NULL,
-  	animacao	INT NOT NULL,
-  	desenvolvimento	INT NOT NULL,
-  	critica		varchar(500)   NOT NULL,
-	dropado		BOOL NOT NULL,
-  	nota_final 	decimal(2, 2)  NOT NULL,
-	data_criacao	DATA NOT NULL,
-	data_mod	DATA NOT NULL,
-		FOREIGN KEY (nome_id) REFERENCES autor(id) ON DELETE RESTRICT,
-		FOREIGN KEY (autor_id) REFERENCES autor(id) ON DELETE RESTRICT,
-		FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE RESTRICT,
-		FOREIGN KEY (origem_id) REFERENCES origem(id) ON DELETE RESTRICT,
-		FOREIGN KEY (status_anime_id) REFERENCES status(id) ON DELETE RESTRICT,
-		FOREIGN KEY (status_origem_id) REFERENCES status(id) ON DELETE RESTRICT
+  	id		 INT AUTO_INCREMENT PRIMARY KEY,
+  	nome_anime_id    INT NOT NULL,
+  	autor_id     	 INT,
+	genero_id 	 INT,
+	temporada_aval	 INT,
+ 	episodios 	 INT,
+	temporadas	 INT,
+	lancamento_anime  DATE,
+	status_anime_id	 INT,	
+  	origem_id	 INT,
+	volumes		 INT,
+  	lancamento_origem  YEAR,
+  	status_origem_id  INT,
+	ovas		 INT,
+	filmes		 INT,
+  	sinopse		 varchar(1000),
+  	resumo		 varchar(1000),
+  	enredo		 INT,
+  	enrolacao	 INT,
+  	animacao	 INT,
+  	desenvolvimento	 INT,
+  	critica		 varchar(1000),
+	dropado		 BOOL,
+  	nota_final 	 decimal(4, 2),
+	data_criacao	 DATETIME NOT NULL,
+	data_mod	 DATETIME NOT NULL,
+		FOREIGN KEY (nome_anime_id) REFERENCES animes_nome_anime(id) ON DELETE RESTRICT,
+		FOREIGN KEY (autor_id) REFERENCES animes_autor(id) ON DELETE RESTRICT,
+		FOREIGN KEY (genero_id) REFERENCES animes_genero(id) ON DELETE RESTRICT,
+		FOREIGN KEY (origem_id) REFERENCES animes_origem(id) ON DELETE RESTRICT,
+		FOREIGN KEY (status_anime_id) REFERENCES animes_status(id) ON DELETE RESTRICT,
+		FOREIGN KEY (status_origem_id) REFERENCES animes_status(id) ON DELETE RESTRICT
   
 );
+
+SELECT animes_avaliacao.id, nome_anime_id, temporada_aval, dropado, animes_nome_anime.nome as nome_anime FROM animes_avaliacao INNER JOIN animes_nome_anime ON animes_avaliacao.nome_anime_id = animes_nome_anime.id
+
+SELECT nome_anime_id, MAX(temporada_aval) as max_temporada_aval, dropado, animes_nome_anime.nome as nome_anime
+FROM animes_avaliacao
+INNER JOIN animes_nome_anime ON animes_avaliacao.nome_anime_id = animes_nome_anime.id
+WHERE nome_anime_id = 1
+GROUP BY nome_anime_id, dropado, animes_nome_anime.nome
+ORDER BY max_temporada_aval DESC
+LIMIT 1;
+
+
+SELECT animes_avaliacao.id, 
+       animes_nome_anime.nome as nome_anime, 
+       animes_autor.nome as autor, 
+       animes_genero.nome as genero, 
+       animes_avaliacao.temporada_aval, 
+       animes_avaliacao.nota_final, 
+       animes_avaliacao.data_criacao, 
+       animes_avaliacao.data_mod,
+       animes_avaliacao.dropado
+FROM animes_avaliacao
+INNER JOIN animes_nome_anime ON animes_avaliacao.nome_anime_id = animes_nome_anime.id
+LEFT JOIN animes_autor ON animes_avaliacao.autor_id = animes_autor.id
+LEFT JOIN animes_genero ON animes_avaliacao.genero_id = animes_genero.id;
+

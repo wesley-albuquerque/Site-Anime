@@ -8,6 +8,7 @@ main{
     border-radius: 10px;
     padding-left: 15px;
     padding-bottom: 15px;
+    padding-right: 15px;
     background-color: rgb(240, 243, 246);
 }
 
@@ -181,6 +182,21 @@ button {
     transform: translateY(-50%); 
 
 }
+.modal-content-avaliacao {
+    background-color: #fff;
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: left;
+    position: relative; 
+    margin: 0 auto;
+    top: 50%; 
+    transform: translateY(-50%);
+    max-height: 80%;
+    overflow-y: auto;
+
+}
 
 .close {
     position: absolute;
@@ -188,4 +204,8 @@ button {
     right: 10px;
     font-size: 24px;
     cursor: pointer;
+}
+
+.buttonAval{
+   text-align: center;
 }
