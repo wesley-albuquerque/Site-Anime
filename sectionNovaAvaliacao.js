@@ -166,7 +166,7 @@ function alteraCamposObrigatorios(dropado) {
     }
 }
 async function ConsultaAvaliacao(id) {
-    return fetch(`https://localhost:7026/api-anime/consulta-animes-avaliacao/${id ? id : ""}`, {
+    return fetch(`${hostApi}/api-anime/consulta-animes-avaliacao/${id ? id : ""}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -245,7 +245,7 @@ function cadastraNovaAvaliacao() {
         nota_final: parseFloat(elementsInput.notaFinal.value),
     });
 
-    fetch(`https://localhost:7026/api-anime/insere-animes`, {
+    fetch(`${hostApi}/api-anime/insere-animes`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

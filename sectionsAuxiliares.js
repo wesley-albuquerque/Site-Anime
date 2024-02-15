@@ -61,7 +61,7 @@ function cadastraCadastroAuxiliar(nomeTabelaCadastroAuxiliar, nomeRegistro) {
     });
 
     return new Promise(function (resolve, reject) {
-        fetch(`https://localhost:7026/api-anime/insere-${nomeTabelaCadastroAuxiliar}`, {
+        fetch(`${hostApi}/api-anime/insere-${nomeTabelaCadastroAuxiliar}`, {
             method: "Post",
             headers: {
                 "Content-Type": "application/json"
@@ -171,7 +171,7 @@ function abreEdicaoCadastroAuxiliar(id, nomeTabelaCadastroAuxiliar) {
         deleteCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar);
     };
     nomePopUp.focus();
-    fetch(`https://localhost:7026/api-anime/consulta-${nomeTabelaCadastroAuxiliar}/${id}`, {
+    fetch(`${hostApi}/api-anime/consulta-${nomeTabelaCadastroAuxiliar}/${id}`, {
         method: "Get",
         headers: {
             "Content-Type": "application/json"
@@ -205,7 +205,7 @@ function atualizaCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
         Nome: nomePopUp.value
     });
 
-    fetch(`https://localhost:7026/api-anime/atualiza-${nomeTabelaCadastroAuxiliar}/`, {
+    fetch(`${hostApi}/api-anime/atualiza-${nomeTabelaCadastroAuxiliar}/`, {
         method: "Post",
         headers: {
             "Content-Type": "application/json"
@@ -235,7 +235,7 @@ function atualizaCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
 function deleteCadastrosAuxiliares(id, nomeTabelaCadastroAuxiliar) {
     if (confirm("Confirma exclusão? Está operação não pode ser desfeita!")) {
         let nomeFormatado = formataNomeCadastroAuxiliar(nomeTabelaCadastroAuxiliar, false)
-        fetch(`https://localhost:7026/api-anime/delete-${nomeTabelaCadastroAuxiliar}/${id}`, {
+        fetch(`${hostApi}/api-anime/delete-${nomeTabelaCadastroAuxiliar}/${id}`, {
             method: "Delete",
             headers: {
                 "Content-Type": "application/json"

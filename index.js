@@ -1,5 +1,6 @@
 const main = document.getElementById("main");
 const novaAval = document.getElementById("sectionNovaAvaliacao").innerHTML;
+const hostApi = "http://192.168218.86:88";
 
 //#region Botões do menu lateral
 function AbrirFecharSideBar() {
@@ -58,7 +59,7 @@ function carregaCadastrosAuxiliares(nomeTabelaCadastroAuxiliar) {
 //#region funções globais de consulta
 
 async function consultaTodosRegistros(tabela, metodo) {
-    return fetch(`https://localhost:7026/api-anime/consulta-${tabela}`, {
+    return fetch(`${hostApi}/api-anime/consulta-${tabela}`, {
         method: metodo,
         headers: {
             "Content-Type": "application/json"
