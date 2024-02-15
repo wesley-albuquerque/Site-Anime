@@ -1,6 +1,6 @@
 const main = document.getElementById("main");
 const novaAval = document.getElementById("sectionNovaAvaliacao").innerHTML;
-const hostApi = "http://192.168218.86:88";
+const hostApi = "http://192.168.18.86:88";
 
 //#region Botões do menu lateral
 function AbrirFecharSideBar() {
